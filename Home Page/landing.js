@@ -186,3 +186,284 @@ function initNavigation() {
 setYear();
 initNavigation();
 setupScrollReveal();
+
+// ---------------------------------------------------------------------------
+// Leadership archive
+// Add older/newer academic years here. Cards are matched by `role`:
+// - same `personId` in the same role -> card stays still
+// - only the Zakaria ↔ Shaz handoff uses the page-turn
+// - new 26–27 roles appear at the bottom of the grid
+// - roles absent from the destination year simply disappear
+// ---------------------------------------------------------------------------
+const leadershipArchive = {
+  "25–26": [
+    {
+      role: "President",
+      personId: "ahmed-maghri",
+      name: "Ahmed Maghri",
+      image: "./images/ahmad.jpeg",
+      alt: "Ahmed Maghri, President",
+      bio: "CS major with a minor in Mathematics & Modeling. Passionate about the intersection of math and CS — and ranked top 0.5% worldwide in osu!",
+    },
+    {
+      role: "Tech Lead",
+      personId: "zakaria",
+      name: "Zakaria",
+      image: "./images/zakaria.jpeg",
+      alt: "Zakaria, Tech Lead",
+      bio: "Dev team lead with a passion for alpinism. Whether it's in code or high up in the mountains, I love a good challenge.",
+    },
+    {
+      role: "Media Lead",
+      personId: "taha-hbirri",
+      name: "Taha Hbirri",
+      image: "./images/Taha.jpeg",
+      alt: "Taha Hbirri, Media Lead",
+      bio: "CS major and audio-visual lead. You'll spot me behind every Math Society Instagram post.",
+    },
+    {
+      role: "Design Lead",
+      personId: "yusuf-bugra-balta",
+      name: "Yusuf Bugra Balta",
+      image: "./images/Yusuf.jpeg",
+      alt: "Yusuf Bugra Balta, Design Lead",
+      bio: "MMDA student from Turkey. Enjoys reading and gaming in his free time.",
+    },
+    {
+      role: "Logistics & Project Management Lead",
+      personId: "eyosiyas",
+      name: "Eyosiyas",
+      image: "./images/Eyosiyas.jpeg",
+      alt: "Eyosiyas, Logistics and Project Management Lead",
+      bio: "Industrial Engineering & Management student who genuinely loves planning events. When not optimizing schedules, I'm probably traveling or turning a quick outing into a full-day adventure. ✈️",
+    },
+  ],
+
+  "26–27": [
+    {
+      role: "President",
+      personId: "ahmed-maghri",
+      name: "Ahmed Maghri",
+      image: "./images/ahmad.jpeg",
+      alt: "Ahmed Maghri, President",
+      bio: "CS major with a minor in Mathematics & Modeling. Passionate about the intersection of math and CS — and ranked top 0.5% worldwide in osu!",
+    },
+    {
+      role: "Co-President",
+      personId: "shaz-ansari",
+      name: "Shaz Ansari",
+      image: "./images/Shaz.jpeg",
+      alt: "Shaz Ansari, Co-President",
+      bio: "I'm a second year Robotics student. In my free time I'm probably playing guitar to Radiohead — if you're a rock fan too, come find me. Long-term I'm chasing a career in robotics and AI.",
+    },
+    {
+      role: "Media Lead",
+      personId: "taha-hbirri",
+      name: "Taha Hbirri",
+      image: "./images/Taha.jpeg",
+      alt: "Taha Hbirri, Media Lead",
+      bio: "CS major and audio-visual lead. You'll spot me behind every Math Society Instagram post.",
+    },
+    {
+      role: "Design Lead",
+      personId: "yusuf-bugra-balta",
+      name: "Yusuf Bugra Balta",
+      image: "./images/Yusuf.jpeg",
+      alt: "Yusuf Bugra Balta, Design Lead",
+      bio: "MMDA student from Turkey. Enjoys reading and gaming in his free time.",
+    },
+    {
+      role: "Logistics & Project Management Lead",
+      personId: "eyosiyas",
+      name: "Eyosiyas",
+      image: "./images/Eyosiyas.jpeg",
+      alt: "Eyosiyas, Logistics and Project Management Lead",
+      bio: "Industrial Engineering & Management student who genuinely loves planning events. When not optimizing schedules, I'm probably traveling or turning a quick outing into a full-day adventure. ✈️",
+    },
+    {
+      role: "Operations Lead",
+      personId: "julissa-barahona",
+      name: "Julissa Barahona",
+      image: "./images/Julissa.jpeg",
+      alt: "Julissa Barahona, Operations Lead",
+      bio: "CS major & Cybersecurity enthusiast. Adventure seeker with an endless curiosity and a serious love for books. If there's something new to learn, build, or explore, count me in.",
+    },
+    {
+      role: "Latex Lead",
+      personId: "sarang-sule",
+      name: "Sarang Sule",
+      image: "./images/Sarang.jpeg",
+      alt: "Sarang Sule, Latex Lead",
+      bio: "I am a 2nd Year MMDA Major with a passion for music, cricket, lego and teaching. I also play (a lot) online on lichess.",
+    },
+    {
+      role: "Tech Lead",
+      personId: "leyla-hajizada",
+      name: "Leyla Hajizada",
+      image: "./images/Leyla.jpeg",
+      alt: "Leyla Hajizada, Tech Lead",
+      bio: "2nd-year CS major and Tech Lead. I enjoy coding, solving problems, and making computers do what I want — though they don't always cooperate.",
+    },
+  ],
+
+  // Add older/newer academic years here — copy a year's structure above.
+};
+
+function createLeadershipCard(lead) {
+  const card = document.createElement("article");
+  card.className = "profile-card glass-card interactive-card";
+  card.dataset.role = lead.role;
+  card.dataset.personId = lead.personId;
+  card.innerHTML = leadershipCardMarkup(lead);
+  return card;
+}
+
+function leadershipCardMarkup(lead) {
+  return `
+    <img src="${lead.image}" alt="${lead.alt}" loading="lazy" decoding="async" />
+    <div class="profile-card__body">
+      <span class="profile-role">${lead.role}</span>
+      <h3>${lead.name}</h3>
+      <p>${lead.bio}</p>
+    </div>
+  `;
+}
+
+function initLeadershipArchive() {
+  const grid = document.getElementById("teamGrid");
+  const prev = document.getElementById("teamYearPrev");
+  const next = document.getElementById("teamYearNext");
+  const label = document.getElementById("teamYearLabel");
+  if (!grid || !prev || !next || !label) return;
+
+  const years = Object.keys(leadershipArchive);
+  if (!years.length) return;
+
+  let currentIndex = years.length - 1;
+
+  function updateControls() {
+    label.textContent = years[currentIndex];
+    prev.disabled = currentIndex === 0;
+    next.disabled = currentIndex === years.length - 1;
+  }
+
+  function renderInitial() {
+    grid.replaceChildren(...leadershipArchive[years[currentIndex]].map(createLeadershipCard));
+    updateControls();
+  }
+
+  function changeYear(direction) {
+    const nextIndex = currentIndex + direction;
+    if (nextIndex < 0 || nextIndex >= years.length) return;
+
+    const currentYear = years[currentIndex];
+    const nextYear = years[nextIndex];
+    const currentLeads = leadershipArchive[currentYear];
+    const nextLeads = leadershipArchive[nextYear];
+    const oldCards = new Map([...grid.children].map((card) => [card.dataset.role, card]));
+    const nextRoles = new Set(nextLeads.map((lead) => lead.role));
+    const claimedCards = new Set();
+
+    // This role handoff is intentional: in the archive's second slot, the
+    // 25–26 Tech Lead card becomes the 26–27 Co-President card (and vice
+    // versa). Reusing the same DOM card makes the page-turn feel identical
+    // in both directions instead of one direction simply inserting a card.
+    const roleHandoffs = new Map([
+      ["25–26→26–27", new Map([["Co-President", "Tech Lead"]])],
+      ["26–27→25–26", new Map([["Tech Lead", "Co-President"]])],
+    ]);
+    const handoffsForTransition = roleHandoffs.get(`${currentYear}→${nextYear}`) || new Map();
+
+    function turnCard(existing, lead) {
+      claimedCards.add(existing);
+      existing.classList.remove("team-card--turning");
+      void existing.offsetWidth;
+      existing.classList.add("team-card--turning");
+
+      window.setTimeout(() => {
+        existing.innerHTML = leadershipCardMarkup(lead);
+        existing.dataset.personId = lead.personId;
+        existing.dataset.role = lead.role;
+      }, 300);
+
+      grid.appendChild(existing);
+    }
+
+    // Dynamically inserted team cards should behave exactly like the rest of
+    // the site's scroll-reveal elements: hidden until they enter the viewport,
+    // with no special year-switch animation.
+    function observeNewCard(card) {
+      card.setAttribute("data-reveal", "");
+      card.classList.remove("is-visible");
+
+      const revealObserver = new IntersectionObserver(
+        (entries, observer) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          });
+        },
+        { threshold: 0.16, rootMargin: "0px 0px -8% 0px" }
+      );
+
+      revealObserver.observe(card);
+    }
+
+    nextLeads.forEach((lead) => {
+      let existing = oldCards.get(lead.role);
+
+      // Prefer the explicit archive handoff when this destination role should
+      // visually grow out of a different role from the previous year.
+      const sourceRole = handoffsForTransition.get(lead.role);
+      if (sourceRole) {
+        const handoffCard = oldCards.get(sourceRole);
+        if (handoffCard && !claimedCards.has(handoffCard)) existing = handoffCard;
+      }
+
+      if (!existing || claimedCards.has(existing)) {
+        const newCard = createLeadershipCard(lead);
+        grid.appendChild(newCard);
+        observeNewCard(newCard);
+        return;
+      }
+
+      // The only morphing handoff is Zakaria ↔ Shaz.
+      if (sourceRole) {
+        turnCard(existing, lead);
+        return;
+      }
+
+      claimedCards.add(existing);
+
+      // Keep unchanged people completely still.
+      if (existing.dataset.personId === lead.personId && existing.dataset.role === lead.role) {
+        grid.appendChild(existing);
+        return;
+      }
+
+      // Any other changed card is replaced without the page-turn effect.
+      existing.innerHTML = leadershipCardMarkup(lead);
+      existing.dataset.personId = lead.personId;
+      existing.dataset.role = lead.role;
+      grid.appendChild(existing);
+    });
+
+    // Anything from the old year that was not reused disappears immediately.
+    // No year-switch exit animation is used for ordinary added/removed leads.
+    oldCards.forEach((card, role) => {
+      if (!claimedCards.has(card) && (!nextRoles.has(role) || card.dataset.role === role)) {
+        card.remove();
+      }
+    });
+
+    currentIndex = nextIndex;
+    updateControls();
+  }
+
+  prev.addEventListener("click", () => changeYear(-1));
+  next.addEventListener("click", () => changeYear(1));
+  renderInitial();
+}
+
+initLeadershipArchive();
