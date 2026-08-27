@@ -881,7 +881,25 @@ button {
   filter: brightness(1.08);
 }
 
-.profile-card__body { padding: 1.35rem; }
+/* Fine-tune portrait framing so faces sit slightly higher in the cards. */
+.profile-card[data-person-id="shaz-ansari"] img {
+  object-position: center 32%;
+}
+
+.profile-card[data-person-id="sarang-sule"] img {
+  object-position: center 32%;
+}
+
+.profile-card[data-person-id="yusuf-bugra-balta"] img {
+  object-position: center 18%;
+}
+
+.profile-card__body {
+  padding: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 16rem;
+}
 
 .profile-card__body h3 { font-size: 1.5rem; }
 .profile-card__body p { font-size: 0.98rem; }
@@ -1867,3 +1885,80 @@ section#hero {
   }
 }
 
+
+/* Leadership archive */
+.team-year-picker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0 auto 2rem;
+}
+
+.team-year-btn {
+  width: 2.7rem;
+  height: 2.7rem;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid rgba(247, 201, 72, 0.22);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--gold-2);
+  cursor: pointer;
+  transition: transform var(--transition), background-color var(--transition), border-color var(--transition), opacity var(--transition);
+}
+
+.team-year-btn:hover:not(:disabled),
+.team-year-btn:focus-visible:not(:disabled) {
+  transform: translateY(-2px);
+  background: rgba(247, 201, 72, 0.1);
+  border-color: rgba(247, 201, 72, 0.5);
+}
+
+.team-year-btn:disabled {
+  opacity: 0.32;
+  cursor: not-allowed;
+}
+
+.team-year-label {
+  min-width: 6.6rem;
+  text-align: center;
+  color: var(--white);
+  font-family: "Roboto Slab", serif;
+  font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+  letter-spacing: 0.04em;
+}
+
+.team-grid {
+  perspective: 1800px;
+  align-items: start;
+}
+
+.profile-card {
+  position: relative;
+  transform-style: preserve-3d;
+  transform-origin: top center;
+}
+
+.profile-card.team-card--turning {
+  animation: team-page-turn 720ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+@keyframes team-page-turn {
+  0% { transform: rotateX(0deg); opacity: 1; }
+  42% { transform: rotateX(-82deg); opacity: 0.08; filter: brightness(0.65); }
+  100% { transform: rotateX(0deg); opacity: 1; filter: brightness(1); }
+}
+
+
+@media (max-width: 680px) {
+  .team-year-picker { margin-bottom: 1.5rem; }
+  .team-year-label { min-width: 5.8rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-card.team-card--turning {
+    animation: none;
+  }
+}

@@ -254,72 +254,25 @@
           <span class="section-label">Leadership</span>
           <h2>Meet our leads</h2>
           <p>
-            The Society is powered by students who care about ideas, execution, and building a memorable
-            culture around mathematics.
+            Explore the people behind the Math Society across different academic years.
           </p>
         </div>
- 
-        <div class="team-grid">
-          <article class="profile-card glass-card interactive-card" data-reveal>
-            <img src="./images/ahmad.jpeg" alt="Ahmed Maghri, President" loading="lazy" decoding="async" />
-            <div class="profile-card__body">
-              <span class="profile-role">President</span>
-              <h3>Ahmed Maghri</h3>
-              <p>
-                CS major with a minor in Mathematics &amp; Modeling. Passionate about the intersection
-                of math and CS — and ranked top 0.5% worldwide in osu!
-              </p>
-            </div>
-          </article>
- 
-          <article class="profile-card glass-card interactive-card" data-reveal style="--delay: 0.06s;">
-            <img src="./images/zakaria.jpeg" alt="Zakaria, Tech Lead" loading="lazy" decoding="async" />
-            <div class="profile-card__body">
-              <span class="profile-role">Tech Lead</span>
-              <h3>Zakaria</h3>
-              <p>
-                Dev team lead with a passion for alpinism. Whether it's in code or high up in the mountains,
-                I love a good challenge.
-              </p>
-            </div>
-          </article>
- 
-          <article class="profile-card glass-card interactive-card" data-reveal style="--delay: 0.12s;">
-            <img src="./images/Taha.jpeg" alt="Taha Hbirri, Media Lead" loading="lazy" decoding="async" />
-            <div class="profile-card__body">
-              <span class="profile-role">Media Lead</span>
-              <h3>Taha Hbirri</h3>
-              <p>
-                CS major and audio-visual lead. You'll spot me behind every Math Society Instagram post.
-              </p>
-            </div>
-          </article>
- 
-          <article class="profile-card glass-card interactive-card" data-reveal style="--delay: 0.18s;">
-            <img src="./images/Yusuf.jpeg" alt="Yusuf Bugra Balta, Design Lead" loading="lazy" decoding="async" />
-            <div class="profile-card__body">
-              <span class="profile-role">Design Lead</span>
-              <h3>Yusuf Bugra Balta</h3>
-              <p>MMDA student from Turkey. Enjoys reading and gaming in his free time.</p>
-            </div>
-          </article>
- 
-          <article class="profile-card glass-card interactive-card" data-reveal style="--delay: 0.24s;">
-            <img src="./images/Eyosiyas.jpeg" alt="Eyosiyas, Logistics and Project Management Lead" loading="lazy" decoding="async" />
-            <div class="profile-card__body">
-              <span class="profile-role">Logistics &amp; Project Management Lead</span>
-              <h3>Eyosiyas</h3>
-              <p>
-                Industrial Engineering &amp; Management student who genuinely loves planning events.
-                When not optimizing schedules, I'm probably traveling or turning a quick outing into
-                a full-day adventure. ✈️
-              </p>
-            </div>
-          </article>
+
+        <!-- Add or edit academic years and leads in landing.js -->
+        <div class="team-year-picker" aria-label="Choose academic year" data-reveal>
+          <button class="team-year-btn" id="teamYearPrev" type="button" aria-label="Previous academic year">
+            <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+          </button>
+          <span class="team-year-label" id="teamYearLabel" aria-live="polite">26–27</span>
+          <button class="team-year-btn" id="teamYearNext" type="button" aria-label="Next academic year">
+            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+          </button>
         </div>
+
+        <div class="team-grid" id="teamGrid" aria-live="polite"></div>
       </div>
     </section>
- 
+
     <section class="testimonials section-anchor" id="testimonials">
       <div class="site-width">
         <div class="section-heading section-heading--center" data-reveal>
