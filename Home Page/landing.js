@@ -342,7 +342,9 @@ function initLeadershipArchive() {
   let currentIndex = years.length - 1;
 
   function updateControls() {
-    label.textContent = years[currentIndex];
+    label.textContent = years[currentIndex] === "25–26"
+    ? "2025–2026"
+    : "2026–2027";
     prev.disabled = currentIndex === 0;
     next.disabled = currentIndex === years.length - 1;
   }
